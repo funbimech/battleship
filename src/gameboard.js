@@ -116,33 +116,34 @@ function gameboard(size = 10) {
   const missedShots = [];
 
   function placeship(shipobj, a, b, direction = "horizontal") {
-    const length = shipobj.length
-    if(direction === 'horizontal') {
-      if(b + length > board[0].length) return false
+    const length = shipobj.length;
+    if (direction === "horizontal") {
+      if (b + length > board[0].length) return false;
     } else {
-      if(a + length > board[0].length) return false
+      if (a + length > board[0].length) return false;
     }
-    for(let i = 0; i < length; i++) {
-      const row = direction ==="horizontal" ? a : a + i
-      const col = direction ==="horizontal" ? b + i + b
-    
-     if (board[row][col] !== "") {
-      return false;
-     } }
+    for (let i = 0; i < length; i++) {
+      const row = direction === "horizontal" ? a : a + i;
+      const col = direction === "horizontal" ? b + i : b;
 
-    for(let i = 0; i < length; i++) {
-     const row = direction ==="horizontal" ? a : a + i
-      const col = direction ==="horizontal" ? b + i + b
-      board[row][col] = shipobj
+      if (board[row][col] !== "") {
+        return false;
+      }
     }
-    placedships.push(shipobj)
-    return true
-  
-}
+
+    for (let i = 0; i < length; i++) {
+      const row = direction === "horizontal" ? a : a + i;
+      const col = direction === "horizontal" ? b + i : b;
+      board[row][col] = shipobj;
+    }
+    placedships.push(shipobj);
+    return true;
+  }
   function receiveAttack(a, b) {
     const target = board[a][b];
     if (!target !== "" && target !== null && target.hit) {
       target.hit();
+      return "hit";
     } else {
       missedShots.push([a, b]);
       return "miss";
@@ -157,10 +158,9 @@ function gameboard(size = 10) {
   };
 }
 function game() {
-  cells.forEach((cells, index) => {
-    cells.addEventListener("click", () => {
-      cells.style.backgroundColor = rdmcolor;
-      
+  cells.forEach((cell, index) => {
+    cell.addEventListener("click", () => {
+      cell.style.backgroundColor = rdmcolor;
     });
   });
 }
